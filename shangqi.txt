@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>四大名著·上期</title>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body {
+  font-family:"ZCOOL KuaiLe","PingFang SC","Microsoft YaHei",sans-serif;
+  background:linear-gradient(180deg,#FFE7C2 0%,#FFC98B 60%,#FFF8E7 100%);
+  min-height:100vh; color:#4A3728; overflow-x:hidden;
+}
+.cloud { position:fixed; font-size:44px; opacity:.55; animation:float 7s ease-in-out infinite; pointer-events:none; z-index:0; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+.wrap { max-width:520px; margin:0 auto; padding:18px 16px 40px; position:relative; z-index:1; }
+.header { text-align:center; padding:22px 0 6px; }
+.mascot { font-size:64px; display:inline-block; animation:bounce 2s ease-in-out infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0) rotate(-4deg)} 50%{transform:translateY(-10px) rotate(4deg)} }
+h1 { font-size:30px; color:#FF7A45; text-shadow:2px 2px 0 #fff; letter-spacing:2px; }
+.sub { font-size:14px; color:#8a6d4f; margin-top:6px; }
+.card {
+  background:#fffdf6; border:3px solid #FF7A45; border-radius:22px;
+  box-shadow:0 5px 0 rgba(0,0,0,.08); padding:20px 18px; margin-top:16px;
+}
+.big-btn {
+  display:block; width:100%; padding:18px; margin-top:14px; border:none; border-radius:18px;
+  font-family:inherit; font-size:20px; color:#fff; background:#FF7A45;
+  box-shadow:0 5px 0 #d95e28; cursor:pointer; transition:transform .08s;
+}
+.big-btn:active { transform:translateY(4px); box-shadow:0 1px 0 #d95e28; }
+.big-btn.alt { background:#FF9F43; box-shadow:0 5px 0 #d97e22; }
+.big-btn.ghost { background:#fff; color:#FF7A45; border:3px solid #FF7A45; box-shadow:0 4px 0 #d95e28; }
+.level-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:16px; }
+.level-btn {
+  background:#fffdf6; border:3px solid #FF7A45; border-radius:16px; padding:14px 8px;
+  font-family:inherit; font-size:17px; color:#4A3728; cursor:pointer; box-shadow:0 4px 0 rgba(0,0,0,.08);
+}
+.level-btn .stars { font-size:13px; color:#F5A623; margin-top:4px; }
+.statusbar { display:flex; justify-content:space-between; align-items:center; margin-top:14px; font-size:16px; }
+.hearts { font-size:20px; letter-spacing:2px; }
+.timer-track { height:14px; background:#eee0c8; border-radius:8px; margin-top:8px; overflow:hidden; border:2px solid #FF7A45; }
+.timer-fill { height:100%; background:linear-gradient(90deg,#7ED321,#F5A623,#FF5A5A); border-radius:6px; transition:width .2s linear; }
+.qcard { background:#fffdf6; border:3px solid #FF7A45; border-radius:22px; padding:22px 18px; margin-top:12px; box-shadow:0 5px 0 rgba(0,0,0,.08); }
+.qtext { font-size:19px; line-height:1.65; }
+.opt {
+  display:block; width:100%; text-align:left; padding:15px 16px; margin-top:12px;
+  background:#FFF6E3; border:3px solid #E8D5B0; border-radius:16px;
+  font-family:inherit; font-size:17px; line-height:1.5; color:#4A3728; cursor:pointer;
+  transition:transform .08s;
+}
+.opt:active { transform:scale(.98); }
+.opt .tag { display:inline-block; min-width:26px; height:26px; line-height:23px; text-align:center; background:#FF7A45; color:#fff; border-radius:50%; margin-right:8px; font-size:14px; }
+.opt.correct { background:#DFF6D8; border-color:#7ED321; animation:pulse .5s; }
+.opt.wrong { background:#FFE0DC; border-color:#FF5A5A; animation:shake .4s; }
+.opt.dim { opacity:.5; }
+@keyframes pulse { 0%{transform:scale(1)} 50%{transform:scale(1.03)} 100%{transform:scale(1)} }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+.panel { margin-top:16px; border-radius:18px; padding:16px; font-size:15px; line-height:1.7; display:none; }
+.panel.show { display:block; animation:slideup .3s; }
+@keyframes slideup { from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:translateY(0)} }
+.panel .verdict { font-size:20px; margin-bottom:8px; }
+.panel.exp { background:#EAF4FF; border:3px solid #7FB3E8; }
+.panel.fact { background:#FFF3D6; border:3px solid #F5C25A; }
+.panel b.tagline { display:block; margin-bottom:4px; }
+.star-row { font-size:30px; text-align:center; letter-spacing:4px; margin:10px 0; }
+.score-big { font-size:44px; text-align:center; color:#FF7A45; }
+.center { text-align:center; }
+.small { font-size:13px; color:#a0855c; text-align:center; margin-top:14px; }
+.backlink { display:inline-block; margin-top:16px; color:#FF7A45; font-size:15px; text-decoration:none; }
+.fly-star { position:fixed; font-size:30px; animation:flyup 1s forwards; pointer-events:none; z-index:99; }
+@keyframes flyup { to { transform:translateY(-160px) scale(1.6); opacity:0; } }
+</style>
+</head>
+<body>
+<div class="cloud" style="top:8%;left:6%">☁️</div>
+<div class="cloud" style="top:16%;right:8%;animation-delay:1.5s">☁️</div>
+<div class="cloud" style="top:4%;right:30%;font-size:30px;animation-delay:3s">⭐</div>
+<div class="wrap">
+
+  <div id="screen-home">
+    <div class="header">
+      <div class="mascot">🐵</div>
+      <h1>四大名著·上期</h1>
+      <div class="sub">人物关系 · 情节因果 · 性格特点 · 名场面</div>
+    </div>
+    <div class="card center">
+      <div style="font-size:17px;line-height:2">🎯 共100题 · 每题10分<br>⭐ 答对得星星 · 有解析和冷知识</div>
+      <button class="big-btn" onclick="showLevels()">🏰 闯关模式（10题一关）</button>
+      <button class="big-btn alt" onclick="startChallenge()">⚡ 极限挑战（40秒 · 3条命）</button>
+      <a class="backlink" href="index.html">← 返回名著目录</a>
+    </div>
+    <div class="small">建议家长陪做，每天10题，3-5分钟 📚</div>
+  </div>
+
+  <div id="screen-levels" style="display:none">
+    <div class="header"><div class="mascot">🏰</div><h1>选择关卡</h1><div class="sub">每关10题，答对一题得一颗星</div></div>
+    <div class="level-grid" id="levelGrid"></div>
+    <button class="big-btn ghost" onclick="goHome()">← 返回</button>
+  </div>
+
+  <div id="screen-quiz" style="display:none">
+    <div class="statusbar">
+      <span id="statusLeft"></span>
+      <span id="statusRight"></span>
+    </div>
+    <div class="timer-track" id="timerTrack" style="display:none"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="qcard"><div class="qtext" id="qText"></div></div>
+    <div id="opts"></div>
+    <div class="panel exp" id="expPanel"></div>
+    <div class="panel fact" id="factPanel"></div>
+    <button class="big-btn" id="nextBtn" style="display:none" onclick="nextQuestion()">下一题 →</button>
+  </div>
+
+  <div id="screen-result" style="display:none">
+    <div class="header"><div class="mascot">🎉</div><h1 id="resultTitle">闯关成功！</h1></div>
+    <div class="card">
+      <div class="star-row" id="resultStars"></div>
+      <div class="score-big" id="resultScore"></div>
+      <div class="center" style="margin-top:8px;font-size:15px" id="resultNote"></div>
+      <button class="big-btn" id="resultBtn1" onclick="resultAction1()">再来一关</button>
+      <button class="big-btn alt" onclick="goHome()">返回首页</button>
+      <a class="backlink" href="index.html">← 返回名著目录</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const DATA = [{"name": "人物关系网 30题", "questions": [{"n": 1, "q": "孙悟空的第一个师父是谁？", "opts": ["唐僧", "菩提祖师", "如来佛祖", "太上老君"], "ans": 1, "exp": "孙悟空在斜月三星洞拜菩提祖师为师，学会了七十二变和筋斗云。", "fact": "\"斜月三星\"合起来就是个\"心\"字——斜月是一钩，三星是三点。"}, {"n": 2, "q": "唐僧和孙悟空是什么关系？", "opts": ["父子", "师徒", "兄弟", "朋友"], "ans": 1, "exp": "唐僧是师父，孙悟空是大徒弟。", "fact": "孙悟空是被唐僧从五行山下救出来的，那张压在山上的金字帖子是唐僧揭掉的。"}, {"n": 3, "q": "猪八戒和孙悟空是什么关系？", "opts": ["师徒", "师兄弟", "父子", "君臣"], "ans": 1, "exp": "两人都是唐僧的徒弟，孙悟空是大师兄。", "fact": "猪八戒以前是天蓬元帅，掌管八万天河水军，论天界资历比孙悟空还老。"}, {"n": 4, "q": "观音菩萨在取经团队中扮演什么角色？", "opts": ["直接领导", "引路人和帮助者", "对手", "旁观者"], "ans": 1, "exp": "观音菩萨奉如来之命寻找取经人，一路点化妖怪、救苦救难。", "fact": "观音菩萨经常变成老妇、和尚来点化师徒，孙悟空的火眼金睛也未必次次都看得出来。"}, {"n": 5, "q": "刘备、关羽、张飞是什么关系？", "opts": ["君臣", "结义兄弟", "父子", "师徒"], "ans": 1, "exp": "三人在桃园结义，成为异姓兄弟。", "fact": "正史里并没有\"桃园三结义\"的记载，只说三人\"恩若兄弟\"，结义仪式是小说虚构的。"}, {"n": 6, "q": "诸葛亮和刘备是什么关系？", "opts": ["君臣", "兄弟", "父子", "师徒"], "ans": 0, "exp": "刘备三顾茅庐请诸葛亮出山，此后诸葛亮担任军师和丞相。", "fact": "诸葛亮出山时27岁，刘备已经47岁，足足大了20岁。"}, {"n": 7, "q": "曹操和曹丕是什么关系？", "opts": ["父子", "兄弟", "君臣", "师徒"], "ans": 0, "exp": "曹丕是曹操的儿子，后来称帝建立魏国。", "fact": "曹操生前一直没有称帝，\"魏武帝\"是曹丕称帝后追封他的。"}, {"n": 8, "q": "孙权和孙策是什么关系？", "opts": ["父子", "兄弟", "君臣", "叔侄"], "ans": 1, "exp": "孙策是孙权的哥哥，孙策遇刺身亡后，孙权接掌了江东。", "fact": "孙策绰号\"小霸王\"，去世时只有26岁，临终前嘱咐孙权\"内事不决问张昭，外事不决问周瑜\"。"}, {"n": 9, "q": "周瑜和孙权是什么关系？", "opts": ["君臣", "兄弟", "父子", "师徒"], "ans": 0, "exp": "周瑜是东吴大都督，辅佐孙权。", "fact": "周瑜和孙策同岁，是好朋友，两人还分别娶了大乔、小乔，是连襟。"}, {"n": 10, "q": "宋江和卢俊义是什么关系？", "opts": ["亲兄弟", "梁山同僚，宋江是正首领，卢俊义是副首领", "师徒", "父子"], "ans": 1, "exp": "梁山排座次后，宋江坐第一把交椅，卢俊义第二。", "fact": "卢俊义原本是大名府富商，是被吴用设计逼上梁山的。"}, {"n": 11, "q": "林冲和鲁智深是什么关系？", "opts": ["结义兄弟", "师徒", "父子", "仇人"], "ans": 0, "exp": "林冲在大相国寺看鲁智深练武，两人一见如故，结为兄弟。", "fact": "后来鲁智深在野猪林救下被发配的林冲，一路暗中护送到沧州。"}, {"n": 12, "q": "武松和武大郎是什么关系？", "opts": ["父子", "兄弟", "师徒", "朋友"], "ans": 1, "exp": "武大郎是武松的哥哥，卖炊饼为生。", "fact": "书里写武大郎身高不满五尺，武松却身高八尺，兄弟俩差别极大。"}, {"n": 13, "q": "贾宝玉和林黛玉是什么关系？", "opts": ["表兄妹", "亲兄妹", "朋友", "师徒"], "ans": 0, "exp": "林黛玉的母亲贾敏是贾宝玉的姑姑，所以两人是姑表兄妹。", "fact": "林黛玉进贾府时大约六七岁，从此长住贾府。"}, {"n": 14, "q": "贾宝玉和薛宝钗是什么关系？", "opts": ["表姐弟", "亲兄妹", "师徒", "朋友"], "ans": 0, "exp": "薛宝钗的母亲薛姨妈是贾宝玉的姨母，两人是姨表姐弟。", "fact": "书里按称呼推算，薛宝钗比贾宝玉大两岁左右。"}, {"n": 15, "q": "贾母和林黛玉是什么关系？", "opts": ["祖孙（外祖母和外孙女）", "母女", "婆媳", "姐妹"], "ans": 0, "exp": "贾母是林黛玉的外祖母，黛玉的母亲贾敏是贾母的女儿。", "fact": "贾母最疼爱的晚辈就是贾宝玉和林黛玉。"}, {"n": 16, "q": "贾政和贾宝玉是什么关系？", "opts": ["父子", "兄弟", "君臣", "师徒"], "ans": 0, "exp": "贾政是贾宝玉的父亲，对宝玉要求极严。", "fact": "贾政每次要打宝玉，王夫人都会搬出贾母来护着，贾政最怕自己母亲生气。"}, {"n": 17, "q": "王熙凤和贾琏是什么关系？", "opts": ["夫妻", "兄妹", "母子", "师徒"], "ans": 0, "exp": "王熙凤是贾琏的妻子，贾府的实际管家。", "fact": "王熙凤管着家，贾琏反而事事要听她的，下人们都更怕凤姐。"}, {"n": 18, "q": "孙悟空和牛魔王是什么关系？", "opts": ["结义兄弟", "师徒", "父子", "仇人"], "ans": 0, "exp": "孙悟空早年与牛魔王等结为七兄弟，牛魔王是大哥。", "fact": "后来因为红孩儿被观音收走的事，两家反目，在火焰山大打出手。"}, {"n": 19, "q": "红孩儿和牛魔王是什么关系？", "opts": ["父子", "兄弟", "师徒", "朋友"], "ans": 0, "exp": "红孩儿是牛魔王和铁扇公主的儿子。", "fact": "红孩儿在火焰山修炼了三百年，练成了三昧真火。"}, {"n": 20, "q": "铁扇公主和红孩儿是什么关系？", "opts": ["母子", "姐妹", "师徒", "朋友"], "ans": 0, "exp": "铁扇公主是红孩儿的母亲。", "fact": "铁扇公主的芭蕉扇能扇灭火焰山的大火，当地百姓每年都带着厚礼求她扇风灭火。"}, {"n": 21, "q": "白骨精和孙悟空是什么关系？", "opts": ["对手", "师徒", "朋友", "亲戚"], "ans": 0, "exp": "白骨精三次变化想吃唐僧，都被孙悟空识破打死。", "fact": "白骨精是取经路上少见的\"草根妖怪\"——没有主人，没有法宝，全靠自己变化骗人。"}, {"n": 22, "q": "六耳猕猴和孙悟空是什么关系？", "opts": ["对手、假扮者", "兄弟", "师徒", "朋友"], "ans": 0, "exp": "六耳猕猴变成孙悟空的模样，引发真假美猴王之争。", "fact": "连观音和托塔天王的照妖镜都分不出真假，最后是如来佛祖识破的。"}, {"n": 23, "q": "关羽和曹操是什么关系？", "opts": ["曾经是君臣，后来各为其主", "一直是敌人", "亲兄弟", "师徒"], "ans": 0, "exp": "关羽曾暂居曹操麾下，得知刘备下落后立刻离开。", "fact": "曹操送关羽赤兔马，关羽高兴地说：有了这马，找到哥哥就能更快赶去了。"}, {"n": 24, "q": "赵云和刘备是什么关系？", "opts": ["君臣", "兄弟", "父子", "师徒"], "ans": 0, "exp": "赵云是刘备麾下大将，在长坂坡救出阿斗。", "fact": "曹操在山上见赵云勇猛，下令不许放冷箭，要活捉他，赵云这才冲出重围。"}, {"n": 25, "q": "观音菩萨把红孩儿收去做了什么？", "opts": ["善财童子", "守山大神", "护法金刚", "坐骑"], "ans": 0, "exp": "红孩儿被观音收服后，做了她身边的善财童子。", "fact": "如来给了观音三个箍儿，孙悟空戴的是\"紧箍\"，红孩儿戴的是\"金箍\"——一个变作五个，套在他头上和手脚上。"}, {"n": 26, "q": "李逵和宋江是什么关系？", "opts": ["宋江是李逵最敬重的大哥", "师徒", "父子", "仇人"], "ans": 0, "exp": "李逵对宋江忠心耿耿，唯命是从。", "fact": "李逵第一次见宋江，宋江随手就给了他十两银子，李逵从此死心塌地。"}, {"n": 27, "q": "吴用在梁山中的角色是什么？", "opts": ["军师", "首领", "武将", "医生"], "ans": 0, "exp": "吴用绰号智多星，是梁山的军师。", "fact": "吴用上山前是个教书先生，所以打扮总是秀才模样。"}, {"n": 28, "q": "宋江在梁山中的角色是什么？", "opts": ["首领", "军师", "武将", "医生"], "ans": 0, "exp": "宋江是梁山第一把交椅，统领一百零八将。", "fact": "宋江上山前是郓城县押司，相当于县衙里的文书。"}, {"n": 29, "q": "贾探春和贾宝玉是什么关系？", "opts": ["同父异母的兄妹", "亲兄妹", "表兄妹", "表姐弟"], "ans": 0, "exp": "贾探春是贾政和赵姨娘生的女儿，宝玉是贾政和王夫人所生。", "fact": "探春管生母赵姨娘只叫\"姨娘\"，认王夫人才是母亲，这让赵姨娘很不痛快。"}, {"n": 30, "q": "史湘云和贾母是什么关系？", "opts": ["贾母娘家的侄孙女", "贾母的女儿", "贾母的儿媳", "贾母的姐妹"], "ans": 0, "exp": "史湘云是贾母娘家史家的侄孙女，从小常来贾府住。", "fact": "史湘云从小父母双亡，性格却豪爽开朗，还爱穿男装。"}]}, {"name": "情节因果 30题", "questions": [{"n": 31, "q": "孙悟空为什么大闹天宫？", "opts": ["玉帝封他弼马温，他觉得被轻视", "他想当玉帝", "他饿了", "他被妖怪骗了"], "ans": 0, "exp": "孙悟空嫌弼马温官小，反下天庭，后来自封齐天大圣。", "fact": "如来和孙悟空打赌，赌他翻不出自己的手掌心，结果孙悟空输了。"}, {"n": 32, "q": "孙悟空为什么被压在五行山下？", "opts": ["他偷吃蟠桃", "他大闹天宫，被如来佛祖降服", "他打死了妖怪", "他不肯取经"], "ans": 1, "exp": "孙悟空翻不出如来的手掌心，被压在五行山下。", "fact": "五行山后来被改名叫\"两界山\"，是大唐国界边上的一座山。"}, {"n": 33, "q": "唐僧为什么要去西天取经？", "opts": ["观音菩萨点化，唐太宗派他去的", "他想旅游", "他迷路了", "他被人追"], "ans": 0, "exp": "观音奉如来之命到东土寻找取经人，唐太宗与唐僧结拜，派他西行。", "fact": "历史上真实的唐僧是玄奘法师，往返一共用了十七年。"}, {"n": 34, "q": "孙悟空为什么三打白骨精？", "opts": ["白骨精三次变化想吃唐僧", "白骨精偷了他的金箍棒", "白骨精骂他", "白骨精抢走了行李"], "ans": 0, "exp": "白骨精先变少女、再变老妇、最后变老翁，都被悟空识破。", "fact": "白骨精又叫\"白骨夫人\"，她被打死后现出原形，是一堆白骨。"}, {"n": 35, "q": "唐僧为什么赶走孙悟空？", "opts": ["误以为孙悟空滥杀无辜", "孙悟空偷懒", "孙悟空偷东西", "孙悟空不肯赶路"], "ans": 0, "exp": "唐僧肉眼凡胎，看不出白骨精的变化，以为悟空连杀三个好人。", "fact": "孙悟空被赶走后，唐僧立刻就被黄袍怪抓住了。"}, {"n": 36, "q": "孙悟空为什么要三借芭蕉扇？", "opts": ["火焰山挡路，需要芭蕉扇灭火", "他想玩扇子", "铁扇公主欠他人情", "牛魔王请他借"], "ans": 0, "exp": "八百里火焰山挡住取经路，只有芭蕉扇能扇灭。", "fact": "火焰山在新疆吐鲁番，是中国最热的地方，夏天地表温度能超过80度。"}, {"n": 37, "q": "诸葛亮为什么要草船借箭？", "opts": ["周瑜刁难他，让他十天造十万支箭", "他想要箭", "曹操要送他箭", "刘备让他去"], "ans": 0, "exp": "周瑜嫉妒诸葛亮的才能，故意出难题，诸葛亮立下军令状三天交箭。", "fact": "历史上\"草船借箭\"的原型是孙权，不是诸葛亮。"}, {"n": 38, "q": "刘备为什么要三顾茅庐？", "opts": ["想请诸葛亮出山帮他", "想拜访朋友", "想找地方住", "想学兵法"], "ans": 0, "exp": "刘备听说诸葛亮有经天纬地之才，三次亲自登门拜访。", "fact": "诸葛亮后来在《出师表》里自己写道\"三顾臣于草庐之中\"，这是他的自述。"}, {"n": 39, "q": "关羽为什么过五关斩六将？", "opts": ["为了护送刘备的两位夫人，回到刘备身边", "他想杀人", "他被追杀", "他迷路了"], "ans": 0, "exp": "关羽得知刘备下落后，封金挂印，护送两位嫂嫂千里寻兄。", "fact": "过五关斩六将是《三国演义》虚构的精彩情节，正史没有记载。"}, {"n": 40, "q": "曹操为什么在赤壁之战中失败？", "opts": ["北方士兵不习水战，中了连环计和火攻", "他生病了", "他兵力不足", "他不想打"], "ans": 0, "exp": "曹操的战船首尾相连，被周瑜抓住机会火攻。", "fact": "赤壁之战是中国历史上最著名的以少胜多的战役之一。"}, {"n": 41, "q": "周瑜为什么要打黄盖？", "opts": ["两人合演苦肉计，骗曹操信任黄盖", "黄盖犯了军法", "周瑜恨黄盖", "黄盖要投奔曹操"], "ans": 0, "exp": "黄盖要诈降曹操，周瑜故意当众打他，让曹操相信黄盖真受了委屈。", "fact": "苦肉计是\"三十六计\"中的一计。"}, {"n": 42, "q": "诸葛亮为什么摆空城计？", "opts": ["城中无兵，只能用计吓退司马懿", "他想弹琴", "他请司马懿进城做客", "他在排演节目"], "ans": 0, "exp": "诸葛亮身边只有老弱残兵，索性大开城门，自己在城楼上弹琴。", "fact": "空城计在正史里没有记载，是《三国演义》的虚构。"}, {"n": 43, "q": "林冲为什么被逼上梁山？", "opts": ["被高俅一步步陷害，走投无路", "他想当强盗", "他自愿上山", "他被朋友骗了"], "ans": 0, "exp": "高俅设计陷害林冲，把他发配沧州，途中还想置他于死地。", "fact": "林冲是《水浒传》里第一个被逼上梁山的朝廷军官。"}, {"n": 44, "q": "武松为什么杀潘金莲和西门庆？", "opts": ["为哥哥武大郎报仇", "他想当英雄", "他喝醉了", "他被逼的"], "ans": 0, "exp": "潘金莲和西门庆合谋害死了武大郎。", "fact": "武松杀嫂后被发配孟州，在孟州又醉打了蒋门神。"}, {"n": 45, "q": "鲁智深为什么拳打镇关西？", "opts": ["镇关西欺负金翠莲父女", "镇关西骂他", "镇关西抢他东西", "镇关西欠他钱"], "ans": 0, "exp": "镇关西强占金翠莲为妾又把她赶走，还追着要钱，鲁智深路见不平。", "fact": "鲁智深只打了三拳——鼻子、眼眶、太阳穴，镇关西就被打死了。"}, {"n": 46, "q": "宋江为什么上梁山？", "opts": ["杀了阎婆惜，被官府追捕", "他想当首领", "他被骗上山", "他自愿上山"], "ans": 0, "exp": "宋江怒杀阎婆惜后亡命江湖，几经波折最终上了梁山。", "fact": "宋江上梁山之前，梁山的首领是晁盖。"}, {"n": 47, "q": "吴用为什么要智取生辰纲？", "opts": ["生辰纲是不义之财，他们想劫富济贫", "他们缺钱花", "他们想出名", "他们被人指使"], "ans": 0, "exp": "生辰纲是梁中书搜刮来的民脂民膏。", "fact": "生辰纲是梁中书送给岳父蔡京的生日礼物，价值十万贯。"}, {"n": 48, "q": "贾宝玉为什么挨打？", "opts": ["贾政认为他不务正业，加上贾环挑拨", "他偷东西", "他打了人", "他不肯吃饭"], "ans": 0, "exp": "贾政一向不满宝玉不爱读\"正经书\"，这次几件事凑在一起，大发雷霆。", "fact": "宝玉挨打是《红楼梦》里最激烈的父子冲突，惊动了整个贾府。"}, {"n": 49, "q": "林黛玉为什么葬花？", "opts": ["她多愁善感，借落花感叹自己的身世", "她喜欢种花", "她没事干", "她想打扫园子"], "ans": 0, "exp": "黛玉见落花飘零，想到自己寄人篱下的身世，葬花自怜。", "fact": "黛玉葬花时吟的《葬花吟》，是《红楼梦》里最著名的诗之一。"}, {"n": 50, "q": "王熙凤为什么被称为\"凤辣子\"？", "opts": ["她性格泼辣，做事果断", "她爱吃辣椒", "她姓凤", "她说话带辣味"], "ans": 0, "exp": "王熙凤精明能干，说话做事又泼辣又果断。", "fact": "王熙凤管家管得井井有条，但她其实不识字，账本要别人念给她听。"}, {"n": 51, "q": "孙悟空为什么能借到芭蕉扇？", "opts": ["他变成小虫钻进铁扇公主肚子里，后来又请来天兵天将帮忙", "铁扇公主送他的", "他偷来的", "牛魔王主动借他的"], "ans": 0, "exp": "第一次借来假扇，第二次变成牛魔王骗到真扇，第三次大战牛魔王才彻底成功。", "fact": "铁扇公主肯交出扇子，是因为红孩儿做了善财童子，她终于服了软。"}, {"n": 52, "q": "诸葛亮为什么七擒孟获？", "opts": ["为了让孟获心服口服，安定南方", "他抓不到别人", "他喜欢抓人", "孟获求他放人"], "ans": 0, "exp": "诸葛亮七次擒获孟获又七次放走，孟获终于心服，不再反叛。", "fact": "正史里也有\"七纵七擒\"的记载，但具体细节是《三国演义》加工的。"}, {"n": 53, "q": "关羽为什么在华容道放走曹操？", "opts": ["念及曹操旧日的恩情", "他打不过曹操", "他怕曹操", "他迷路了"], "ans": 0, "exp": "曹操当年厚待关羽，关羽重义，不忍下手。", "fact": "华容道在今天的湖北监利一带。"}, {"n": 54, "q": "张飞为什么大喝一声就能吓退曹军？", "opts": ["他声如巨雷，曹军以为桥后有伏兵", "他会法术", "他带了很多人", "曹操怕他"], "ans": 0, "exp": "张飞独自横矛立马在长坂桥头，三声大喝，曹军不敢近前。", "fact": "书里写曹操身边的大将夏侯杰，竟被这一声大喝吓得掉下马来。"}, {"n": 55, "q": "赵云为什么在长坂坡七进七出？", "opts": ["为了救出刘备的儿子阿斗", "他想杀人", "他被围困", "他迷路了"], "ans": 0, "exp": "赵云在乱军之中怀抱阿斗，杀出重围。", "fact": "刘备接过孩子往地上一摔，说\"为汝这孺子，几损我一员大将\"——这就是\"刘备摔孩子\"的来历。"}, {"n": 56, "q": "贾宝玉为什么最后出家？", "opts": ["经历家族衰败和情缘幻灭，看破红尘", "他喜欢当和尚", "他被逼的", "他没钱了"], "ans": 0, "exp": "贾府败落，黛玉去世，宝玉心灰意冷。", "fact": "在通行的120回本里，宝玉出家前还考中了举人，然后跟着一僧一道走了。"}, {"n": 57, "q": "武松为什么在景阳冈打虎？", "opts": ["老虎扑出来伤他，他被迫搏斗", "他想当英雄", "他想试试力气", "他被人推上冈的"], "ans": 0, "exp": "武松不听店家劝阻上冈，遇到猛虎，赤手空拳与之搏斗。", "fact": "武松上冈前喝了十八碗酒，那酒店的酒旗上写着\"三碗不过冈\"。"}, {"n": 58, "q": "鲁智深为什么倒拔垂杨柳？", "opts": ["为了震慑想捉弄他的泼皮无赖", "他想锻炼身体", "他无聊", "他被人激将"], "ans": 0, "exp": "一群泼皮想给鲁智深一个下马威，结果被他倒拔垂杨柳的神力镇住了。", "fact": "垂杨柳被连根拔起时带起一个大坑，泼皮们吓得跪地求饶，从此拜他为师。"}, {"n": 59, "q": "林冲为什么\"风雪山神庙\"？", "opts": ["他被派看守草料场，大雪压塌草厅，夜宿山神庙躲过一劫", "他去拜神", "他迷路了", "他去赏雪"], "ans": 0, "exp": "陆谦等人火烧草料场想害死林冲，林冲恰在山神庙过夜，听到密谋后杀了仇人。", "fact": "杀完仇人，林冲冒着大雪直奔梁山，从此再无退路。"}, {"n": 60, "q": "宋江为什么接受招安？", "opts": ["想为兄弟们谋一条正路", "他怕死", "他想当大官", "他被逼的"], "ans": 0, "exp": "宋江一直认为落草不是长久之计，想让兄弟们有个出身。", "fact": "招安后梁山好汉被派去征方腊，一百零八将最后只有二十七人回到京城。"}]}, {"name": "性格与选择 20题", "questions": [{"n": 61, "q": "孙悟空最突出的性格特点是什么？", "opts": ["勇敢、机智、有反抗精神", "胆小怕事", "懒惰", "自私自利"], "ans": 0, "exp": "孙悟空敢大闹天宫，一路上降妖除魔保护师父。", "fact": "天不怕地不怕的孙悟空，最怕的是唐僧念紧箍咒。"}, {"n": 62, "q": "猪八戒最突出的性格特点是什么？", "opts": ["贪吃、爱偷懒，但憨厚可爱", "勤奋刻苦", "足智多谋", "英勇无畏"], "ans": 0, "exp": "猪八戒有不少小毛病，但心地不坏，是取经路上的\"开心果\"。", "fact": "猪八戒原本是天蓬元帅，因为调戏嫦娥被贬下凡，错投了猪胎。"}, {"n": 63, "q": "唐僧最突出的性格特点是什么？", "opts": ["善良、执着，但有时是非不分", "武功高强", "狡猾多疑", "好吃懒做"], "ans": 0, "exp": "唐僧取经的信念最坚定，但常常把妖怪当成好人。", "fact": "唐僧的原型是玄奘法师，真实历史上他西行取经走了五万里路。"}, {"n": 64, "q": "诸葛亮最突出的特点是什么？", "opts": ["足智多谋、忠心耿耿", "武功高强", "胆小谨慎", "自私自利"], "ans": 0, "exp": "诸葛亮上知天文下知地理，为蜀汉鞠躬尽瘁。", "fact": "传说诸葛亮发明了木牛流马、孔明灯，还写了千古名篇《出师表》。"}, {"n": 65, "q": "关羽最突出的特点是什么？", "opts": ["忠义、勇猛，但骄傲自负", "胆小怕事", "狡猾多变", "懒惰成性"], "ans": 0, "exp": "关羽忠义无双，但骄傲自大，最终大意失荆州、败走麦城。", "fact": "关羽死后被尊为\"武圣\"，和\"文圣\"孔子并列。"}, {"n": 66, "q": "曹操最突出的特点是什么？", "opts": ["雄才大略，但多疑奸诈", "胆小怕事", "懒惰无为", "忠厚老实"], "ans": 0, "exp": "曹操是杰出的政治家、军事家，但疑心极重。", "fact": "曹操还是大文学家，\"建安文学\"的代表人物，《短歌行》《观沧海》都是他写的。"}, {"n": 67, "q": "刘备最突出的特点是什么？", "opts": ["仁义、善于用人", "武功高强", "狡猾奸诈", "刚愎自用"], "ans": 0, "exp": "刘备以仁义收揽人心，三顾茅庐请出诸葛亮。", "fact": "《三国演义》里刘备特别爱哭，但正史里的刘备其实性格刚烈，很少哭。"}, {"n": 68, "q": "张飞最突出的特点是什么？", "opts": ["勇猛、脾气暴躁，但粗中有细", "胆小怕事", "狡猾多变", "好吃懒做"], "ans": 0, "exp": "张飞勇猛无比，但脾气暴躁，最终被部下所害。", "fact": "张飞也有用脑子的时候——\"义释严颜\"就是他用计谋收服老将严颜的故事。"}, {"n": 69, "q": "林冲最突出的特点是什么？", "opts": ["隐忍善良，被逼到绝路才反抗", "脾气暴躁", "狡猾多疑", "胆小懦弱"], "ans": 0, "exp": "林冲一忍再忍，直到高俅步步紧逼、要置他于死地才奋起反抗。", "fact": "林冲绰号\"豹子头\"，因为长得豹头环眼，燕颔虎须。"}, {"n": 70, "q": "武松最突出的特点是什么？", "opts": ["勇猛刚烈、恩怨分明", "胆小怕事", "狡猾多变", "优柔寡断"], "ans": 0, "exp": "武松打虎、为兄报仇、醉打蒋门神，有恩必报、有仇也必报。", "fact": "武松在征方腊时失去一条手臂，后来在六和寺出家，活到八十岁善终。"}, {"n": 71, "q": "鲁智深最突出的特点是什么？", "opts": ["侠义豪爽、粗中有细", "胆小怕事", "狡猾奸诈", "自私自利"], "ans": 0, "exp": "鲁智深路见不平就出手，救人还要救到底。", "fact": "鲁智深最后在六和寺听潮信而圆寂，留下\"今日方知我是我\"的偈语。"}, {"n": 72, "q": "宋江最突出的特点是什么？", "opts": ["仗义疏财、善于笼络人心", "武功高强", "胆小怕事", "自私刻薄"], "ans": 0, "exp": "宋江人称\"及时雨\"，谁有困难他都帮，所以江湖威望极高。", "fact": "宋江个子不高、面目黝黑，外号里还有个\"孝义黑三郎\"。"}, {"n": 73, "q": "吴用最突出的特点是什么？", "opts": ["足智多谋", "武功高强", "胆小怕事", "懒惰无为"], "ans": 0, "exp": "吴用是梁山军师，智取生辰纲就是他的主意。", "fact": "宋江死后，吴用在宋江墓前自缢，追随他而去。"}, {"n": 74, "q": "李逵最突出的特点是什么？", "opts": ["勇猛鲁莽、对宋江忠心", "胆小怕事", "狡猾多变", "懒惰无为"], "ans": 0, "exp": "李逵作战勇猛，但头脑简单、容易闯祸。", "fact": "李逵最后是喝了宋江给他的毒酒死的——宋江怕他死后造反，坏了\"忠义\"的名声。"}, {"n": 75, "q": "贾宝玉最突出的特点是什么？", "opts": ["多情、叛逆、尊重女性", "勤奋好学", "武功高强", "狡猾世故"], "ans": 0, "exp": "宝玉厌恶科举仕途，认为女孩子比男人干净可爱。", "fact": "宝玉还说\"我见了女儿便觉清爽，见了男子便觉浊臭逼人\"。"}, {"n": 76, "q": "林黛玉最突出的特点是什么？", "opts": ["才华横溢、多愁善感", "活泼开朗", "泼辣能干", "圆滑世故"], "ans": 0, "exp": "黛玉诗才出众，但身世飘零，敏感多愁。", "fact": "林黛玉的前世是西方灵河岸边的绛珠仙草，下凡是为了\"还泪\"。"}, {"n": 77, "q": "薛宝钗最突出的特点是什么？", "opts": ["稳重贤淑、识大体", "多愁善感", "泼辣刁蛮", "胆小怕事"], "ans": 0, "exp": "宝钗处事稳重，人人都说她好。", "fact": "薛宝钗的金锁上刻着\"不离不弃，芳龄永继\"，和宝玉的玉上\"莫失莫忘，仙寿恒昌\"正好是一对。"}, {"n": 78, "q": "王熙凤最突出的特点是什么？", "opts": ["精明能干、泼辣狠辣", "胆小怕事", "单纯善良", "好吃懒做"], "ans": 0, "exp": "王熙凤管理几百口人的贾府，精明强干，但也心狠手辣。", "fact": "她的判词里有一句\"一从二令三人木\"，\"三人木\"合起来是个\"休\"字，暗示她后来被休弃的命运。"}, {"n": 79, "q": "如果唐僧没有孙悟空，取经会怎样？", "opts": ["很难成功，因为孙悟空是主要保护者", "一样成功", "会更容易", "完全没影响"], "ans": 0, "exp": "一路上的妖怪几乎都是孙悟空降服的。", "fact": "孙悟空刚被赶走，唐僧就被黄袍怪抓走了，可见悟空多重要。"}, {"n": 80, "q": "如果诸葛亮没有遇到刘备，他可能会怎样？", "opts": ["继续在隆中隐居，才华难被重用", "自己当皇帝", "去当武将", "去投奔曹操"], "ans": 0, "exp": "诸葛亮隐居隆中，是刘备三顾茅庐才请他出山的。", "fact": "他在《出师表》里说自己原本\"苟全性命于乱世，不求闻达于诸侯\"。"}]}, {"name": "名场面细节 20题", "questions": [{"n": 81, "q": "《西游记》中\"大闹天宫\"和\"三打白骨精\"哪个发生在前？", "opts": ["大闹天宫", "三打白骨精", "同时发生", "书里没说"], "ans": 0, "exp": "大闹天宫后孙悟空被压五行山，五百年后才随唐僧取经，三打白骨精是取经路上的事。", "fact": "大闹天宫在前七回，三打白骨精在第二十七回。"}, {"n": 82, "q": "孙悟空被赶走后，猪八戒用什么方法请他回来？", "opts": ["撒谎说妖怪骂他，用激将法", "跪下来求他", "给他带好吃的", "请观音帮忙"], "ans": 0, "exp": "猪八戒故意说黄袍怪骂孙悟空，专戳他的痛处。", "fact": "孙悟空一听妖怪骂他，果然火冒三丈，跳起来就要去打。"}, {"n": 83, "q": "诸葛亮草船借箭，为什么选在第三天四更时分？", "opts": ["因为他料定那时江上有大雾", "因为那时曹操在睡觉", "因为那时涨潮", "因为那时周瑜不在"], "ans": 0, "exp": "大雾天曹军看不清虚实，只敢放箭，不敢出战。", "fact": "诸葛亮说\"为将而不通天文，不识地利，是庸才也\"，雾是他算出来的。"}, {"n": 84, "q": "赤壁之战中，曹操的战船为什么被连在一起？", "opts": ["北方士兵晕船，连起来减少颠簸", "为了好看", "为了方便进攻", "为了方便撤退"], "ans": 0, "exp": "北方士兵不习水战，船连起来像平地一样。", "fact": "连环船正好给了周瑜火攻的机会——一条船着火，全都跑不掉。"}, {"n": 85, "q": "\"温酒斩华雄\"中，酒还没凉说明什么？", "opts": ["关羽斩将极快，来回时间很短", "天气太热", "酒本来就是热的", "关羽没来得及喝"], "ans": 0, "exp": "曹操斟的酒还温着，关羽已经提着华雄的头回来了。", "fact": "正史里华雄其实是孙坚杀的，\"温酒斩华雄\"是《三国演义》移花接木。"}, {"n": 86, "q": "武松打虎时，老虎先用哪三招？", "opts": ["一扑、一掀、一剪", "一咬、一抓、一踢", "一吼、一跳、一扑", "一撞、一踢、一咬"], "ans": 0, "exp": "老虎的看家本事就是一扑、一掀、一剪，三招用完气性先自没了一半。", "fact": "这三招的描写是《水浒传》里最经典的场面之一，老虎的尾巴像铁棒一样横扫。"}, {"n": 87, "q": "\"风雪山神庙\"中，林冲为什么能逃过一劫？", "opts": ["大雪压塌了草厅，他只好去山神庙过夜", "他提前逃跑了", "有人给他报信", "他躲进了地窖"], "ans": 0, "exp": "草厅被雪压塌，林冲去山神庙安身，反而躲过了草料场大火。", "fact": "林冲在山神庙里亲耳听到陆谦等人的密谋，这才彻底寒了心。"}, {"n": 88, "q": "鲁智深倒拔垂杨柳后，泼皮们对他什么态度？", "opts": ["心服口服，拜他为师", "更加恨他", "去官府告他", "吓得逃跑"], "ans": 0, "exp": "泼皮们被他的神力折服，从此天天买酒买肉孝敬他。", "fact": "正是在相国寺菜园，林冲来看鲁智深练武，两人才结为兄弟。"}, {"n": 89, "q": "宋江为什么能当上梁山首领？", "opts": ["他仗义疏财、威望高，兄弟们都服他", "他武功最高", "他最有钱", "他最先上梁山"], "ans": 0, "exp": "宋江\"及时雨\"的名号响彻江湖，晁盖死后众人推他坐第一把交椅。", "fact": "宋江上任后，把\"聚义厅\"改名为\"忠义堂\"——一字之差，意思大变。"}, {"n": 90, "q": "贾宝玉和林黛玉第一次见面时，有什么感觉？", "opts": ["似曾相识，像认识很久一样", "互相讨厌", "互相害怕", "毫无感觉"], "ans": 0, "exp": "宝玉一见面就说\"这个妹妹我曾见过的\"。", "fact": "贾母听了笑道：\"可又是胡说，你何曾见过她？\"宝玉说：\"虽然没见过，却看着面善。\""}, {"n": 91, "q": "林黛玉进贾府时，为什么\"步步留心，时时在意\"？", "opts": ["母亲刚去世，她寄人篱下，怕被人笑话", "她天生胆小", "她不认识路", "她生病了"], "ans": 0, "exp": "黛玉怕失了礼数被人耻笑，不肯轻易多说一句话、多行一步路。", "fact": "黛玉进府时，贾母抱着她大哭：\"我这些儿女，所疼者独有你母。\""}, {"n": 92, "q": "王熙凤第一次见林黛玉时，说了什么？", "opts": ["夸她标致，说\"竟不像老祖宗的外孙女儿，竟是个嫡亲的孙女\"", "批评她", "不理她", "只哭不说话"], "ans": 0, "exp": "王熙凤一句话同时夸了黛玉和贾府的姐妹，滴水不漏。", "fact": "夸完黛玉，她马上又抹着眼泪说黛玉命苦——转悲为喜、转喜为悲，全在一瞬间。"}, {"n": 93, "q": "贾宝玉为什么摔玉？", "opts": ["听说林黛玉没有玉，觉得这不是个好东西", "他不喜欢玉", "他无理取闹", "玉掉地上了"], "ans": 0, "exp": "宝玉说\"家里姐姐妹妹都没有，单我有，如今来了个神仙似的妹妹也没有\"，便要摔玉。", "fact": "贾母急得直喊：\"孽障！你生气要打骂人容易，何苦摔那命根子！\""}, {"n": 94, "q": "大观园中，谁住在\"潇湘馆\"？", "opts": ["林黛玉", "薛宝钗", "贾宝玉", "贾探春"], "ans": 0, "exp": "潇湘馆是黛玉的住所。", "fact": "潇湘馆里种满竹子，竹子和黛玉高洁、爱哭的气质正好相配——古人还用\"湘妃竹\"的典故写泪痕。"}, {"n": 95, "q": "大观园中，谁住在\"怡红院\"？", "opts": ["贾宝玉", "林黛玉", "薛宝钗", "贾探春"], "ans": 0, "exp": "怡红院是宝玉的住所。", "fact": "院里种着海棠和芭蕉，宝玉题名\"红香绿玉\"，元春省亲时改成了\"怡红快绿\"。"}, {"n": 96, "q": "大观园中，谁住在\"蘅芜苑\"？", "opts": ["薛宝钗", "林黛玉", "贾宝玉", "贾探春"], "ans": 0, "exp": "蘅芜苑是宝钗的住所。", "fact": "蘅芜苑里种的不是花，而是各种香草，屋子素净得像\"雪洞\"一样，很符合宝钗的性格。"}, {"n": 97, "q": "唐僧收徒的顺序是什么？", "opts": ["孙悟空→猪八戒→沙僧", "猪八戒→孙悟空→沙僧", "沙僧→孙悟空→猪八戒", "孙悟空→沙僧→猪八戒"], "ans": 0, "exp": "先收五行山下的孙悟空，再收高老庄的猪八戒，最后收流沙河里的沙僧。", "fact": "严格说来，白龙马是在收猪八戒之前就归顺的，所以完整顺序是悟空→白龙马→八戒→沙僧。"}, {"n": 98, "q": "孙悟空被压在五行山下多少年？", "opts": ["五百年", "一千年", "三百年", "一百年"], "ans": 0, "exp": "书里说\"五百年前大闹天宫的孙猴子\"，大家都说是五百年。", "fact": "可细抠原著时间线，从王莽年间压山到唐僧取经，其实有六百多年——这是《西游记》里有名的\"时间漏洞\"。"}, {"n": 99, "q": "赤壁之战后，刘备占领了哪里？", "opts": ["荆州", "许昌", "洛阳", "长安"], "ans": 0, "exp": "赤壁之战后，刘备趁机占据荆州，终于有了立足之地。", "fact": "荆州本是向东吴\"借\"的，后来一直没还——这就是歇后语\"刘备借荆州——有借无还\"的来历。"}, {"n": 100, "q": "梁山好汉被招安后，被朝廷派去做什么？", "opts": ["征讨方腊", "攻打金国", "守卫边疆", "修筑长城"], "ans": 0, "exp": "招安后，梁山人马被派去江南征讨方腊。", "fact": "征方腊一战极其惨烈，一百零八将最后只有二十七人回京，宋江和卢俊义后来也被奸臣毒死。"}]}];
+const STORE_KEY = "sdmz_shang";
+const ALL = [];
+DATA.forEach(s => s.questions.forEach(q => ALL.push(q)));
+
+let mode = "level", levelIdx = 0, qIdx = 0, score = 0, lives = 3, timeLeft = 40, timerId = null, pool = [];
+
+function $(id){ return document.getElementById(id); }
+function show(id){ ["screen-home","screen-levels","screen-quiz","screen-result"].forEach(s => $(s).style.display = s===id?"block":"none"); window.scrollTo(0,0); }
+function goHome(){ clearInterval(timerId); show("screen-home"); }
+function loadStore(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY))||{} }catch(e){ return {} } }
+function saveStore(o){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(o)) }catch(e){} }
+
+/* ---------- 闯关 ---------- */
+function showLevels(){
+  const st = loadStore(); const g = $("levelGrid"); g.innerHTML = "";
+  for(let i=0;i<10;i++){
+    const stars = st["lv"+i]||0;
+    const b = document.createElement("button");
+    b.className="level-btn";
+    b.innerHTML = "第"+(i+1)+"关<br><span class='stars'>"+"⭐".repeat(stars)+"☆".repeat(10-stars).slice(0,10-stars>0?10-stars:0)+"</span>";
+    b.onclick = ()=>startLevel(i);
+    g.appendChild(b);
+  }
+  show("screen-levels");
+}
+function startLevel(i){
+  mode="level"; levelIdx=i; qIdx=0; score=0;
+  pool = ALL.slice(i*10, i*10+10);
+  $("timerTrack").style.display="none";
+  renderQ(); show("screen-quiz");
+}
+/* ---------- 极限挑战 ---------- */
+function startChallenge(){
+  mode="challenge"; qIdx=0; score=0; lives=3; timeLeft=40;
+  pool = ALL.slice().sort(()=>Math.random()-.5);
+  $("timerTrack").style.display="block";
+  renderQ(); show("screen-quiz");
+  clearInterval(timerId);
+  timerId = setInterval(()=>{
+    timeLeft = Math.max(0, timeLeft - 0.2);
+    $("timerFill").style.width = (timeLeft/40*100)+"%";
+    $("statusLeft").textContent = "⏱ "+Math.ceil(timeLeft)+"秒";
+    if(timeLeft<=0){ endChallenge(); }
+  },200);
+}
+/* ---------- 出题 ---------- */
+function renderQ(){
+  const q = pool[qIdx % pool.length];
+  if(mode==="level"){
+    $("statusLeft").textContent = "第"+(levelIdx+1)+"关 · 第"+(qIdx+1)+"/10题";
+    $("statusRight").textContent = "⭐ "+score;
+  }else{
+    $("statusLeft").textContent = "⏱ "+Math.ceil(timeLeft)+"秒";
+    $("statusRight").innerHTML = "<span class='hearts'>"+"❤️".repeat(lives)+"</span> ⭐"+score;
+  }
+  $("qText").textContent = q.q;
+  const box = $("opts"); box.innerHTML="";
+  const letters=["A","B","C","D"];
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement("button");
+    b.className="opt";
+    b.innerHTML="<span class='tag'>"+letters[i]+"</span>"+o;
+    b.onclick=()=>answer(i,b,q);
+    box.appendChild(b);
+  });
+  $("expPanel").className="panel exp"; $("factPanel").className="panel fact";
+  $("nextBtn").style.display="none";
+}
+function answer(i, btn, q){
+  const opts = document.querySelectorAll(".opt");
+  opts.forEach(o=>o.style.pointerEvents="none");
+  const ok = i===q.ans;
+  opts[q.ans].classList.add("correct");
+  if(ok){
+    score++;
+    const s=document.createElement("div"); s.className="fly-star"; s.textContent="⭐";
+    s.style.left="50%"; s.style.top="40%"; document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1000);
+    opts.forEach((o,idx)=>{ if(idx!==q.ans) o.classList.add("dim"); });
+  }else{
+    btn.classList.add("wrong");
+    if(mode==="challenge"){ lives--; }
+  }
+  if(mode==="challenge"){ $("statusRight").innerHTML="<span class='hearts'>"+"❤️".repeat(lives)+"</span> ⭐"+score; }
+  $("expPanel").innerHTML="<div class='verdict'>"+(ok?"🎉 答对啦！+1颗星":"💪 别灰心！正确答案是 "+"ABCD"[q.ans])+"</div><b class='tagline'>📖 为什么？</b>"+q.exp;
+  $("factPanel").innerHTML="<b class='tagline'>💡 冷知识</b>"+q.fact;
+  $("expPanel").classList.add("show"); $("factPanel").classList.add("show");
+  if(mode==="level"){
+    $("nextBtn").style.display="block";
+    $("nextBtn").textContent = qIdx===9 ? "看看本关成绩 →" : "下一题 →";
+  }else{
+    if(lives<=0){ setTimeout(endChallenge, 1600); }
+    else setTimeout(()=>{ qIdx++; renderQ(); }, 1600);
+  }
+}
+function nextQuestion(){
+  if(mode!=="level") return;
+  qIdx++;
+  if(qIdx>=10){ endLevel(); } else { renderQ(); }
+}
+function endLevel(){
+  const st = loadStore();
+  st["lv"+levelIdx] = Math.max(st["lv"+levelIdx]||0, score);
+  saveStore(st);
+  $("resultTitle").textContent = score>=8 ? "太棒了！" : score>=5 ? "不错哦！" : "继续加油！";
+  $("resultStars").textContent = "⭐".repeat(score)+"☆".repeat(10-score);
+  $("resultScore").textContent = score*10+" 分";
+  $("resultNote").textContent = "第"+(levelIdx+1)+"关：答对 "+score+"/10 题";
+  $("resultBtn1").textContent = levelIdx<9 ? "挑战下一关 →" : "再玩一次";
+  show("screen-result");
+}
+function resultAction1(){
+  if(mode==="level"){ startLevel(levelIdx<9?levelIdx+1:levelIdx); }
+  else{ startChallenge(); }
+}
+function endChallenge(){
+  clearInterval(timerId);
+  const st = loadStore();
+  const best = st["best"]||0;
+  if(score>best){ st["best"]=score; saveStore(st); }
+  $("resultTitle").textContent = score>best ? "新纪录！" : "挑战结束！";
+  $("resultStars").textContent = "⭐".repeat(Math.min(score,20));
+  $("resultScore").textContent = score*10+" 分";
+  $("resultNote").textContent = "答对 "+score+" 题 · 历史最佳 "+Math.max(best,score)*10+" 分";
+  $("resultBtn1").textContent = "再来一次 ⚡";
+  show("screen-result");
+}
+</script>
+</body>
+</html>
