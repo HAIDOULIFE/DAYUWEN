@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>大语文闯关 · 四大名著</title>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body {
+  font-family:"ZCOOL KuaiLe","PingFang SC","Microsoft YaHei",sans-serif;
+  background:linear-gradient(180deg,#BEE3F8 0%,#FFF1C9 70%,#FFE8C2 100%);
+  min-height:100vh; color:#4A3728;
+}
+.cloud { position:fixed; font-size:44px; opacity:.55; animation:float 7s ease-in-out infinite; pointer-events:none; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+.wrap { max-width:520px; margin:0 auto; padding:24px 16px 48px; position:relative; z-index:1; }
+.header { text-align:center; padding:18px 0 4px; }
+.mascots { font-size:52px; letter-spacing:6px; }
+.mascots span { display:inline-block; animation:bounce 2.2s ease-in-out infinite; }
+.mascots span:nth-child(2){ animation-delay:.3s } .mascots span:nth-child(3){ animation-delay:.6s } .mascots span:nth-child(4){ animation-delay:.9s }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+h1 { font-size:32px; color:#E05A2B; text-shadow:2px 2px 0 #fff; letter-spacing:2px; margin-top:8px; }
+.sub { font-size:14px; color:#8a6d4f; margin-top:6px; }
+.vol {
+  display:flex; align-items:center; gap:14px; text-decoration:none; color:#4A3728;
+  background:#fffdf6; border:3px solid; border-radius:22px; padding:18px;
+  margin-top:18px; box-shadow:0 5px 0 rgba(0,0,0,.08); transition:transform .08s;
+}
+.vol:active { transform:translateY(3px); }
+.vol .icon { font-size:44px; }
+.vol .t1 { font-size:21px; }
+.vol .t2 { font-size:13px; color:#8a6d4f; margin-top:4px; line-height:1.5; }
+.vol .go { margin-left:auto; font-size:22px; }
+.v1 { border-color:#FF7A45; } .v2 { border-color:#38A169; } .v3 { border-color:#7B5EA7; }
+.tip {
+  margin-top:22px; background:#fffdf6; border:3px dashed #E8B45A; border-radius:18px;
+  padding:14px 16px; font-size:14px; line-height:1.9; color:#7a5c36;
+}
+.small { font-size:12px; color:#a0855c; text-align:center; margin-top:18px; }
+</style>
+</head>
+<body>
+<div class="cloud" style="top:6%;left:6%">☁️</div>
+<div class="cloud" style="top:12%;right:8%;animation-delay:1.5s">☁️</div>
+<div class="cloud" style="top:3%;right:32%;font-size:28px;animation-delay:3s">⭐</div>
+<div class="wrap">
+  <div class="header">
+    <div class="mascots"><span>🐵</span><span>🐷</span><span>🐴</span><span>📖</span></div>
+    <h1>大语文闯关 · 四大名著</h1>
+    <div class="sub">每天10题 · 3-5分钟 · 答对得星星 · 有解析和冷知识</div>
+  </div>
+
+  <a class="vol v1" href="shangqi.html">
+    <div class="icon">🐵</div>
+    <div>
+      <div class="t1">上期 · 打基础</div>
+      <div class="t2">人物关系网 · 情节因果 · 性格特点 · 名场面细节（100题）</div>
+    </div>
+    <div class="go">→</div>
+  </a>
+  <a class="vol v2" href="zhongqi.html">
+    <div class="icon">📜</div>
+    <div>
+      <div class="t1">中期 · 重积累</div>
+      <div class="t2">成语典故 · 歇后语俗语 · 诗词名句 · 古代文化常识（100题）</div>
+    </div>
+    <div class="go">→</div>
+  </a>
+  <a class="vol v3" href="xiaqi.html">
+    <div class="icon">🧭</div>
+    <div>
+      <div class="t1">下期 · 练理解</div>
+      <div class="t2">主题思想 · 人物对比 · 跨名著比较 · 易错辨析 · 综合情境（100题）</div>
+    </div>
+    <div class="go">→</div>
+  </a>
+
+  <div class="tip">
+    🏰 <b>闯关模式</b>：10题一关，每关10题，答对一题得一颗⭐<br>
+    ⚡ <b>极限挑战</b>：40秒倒计时，3条命，答错扣命，答对+10分<br>
+    👨‍👩‍👧 建议家长陪做，聊聊每题的"冷知识"，比做题本身更有收获
+  </div>
+  <div class="small">手机点开即玩</div>
+</div>
+</body>
+</html>
